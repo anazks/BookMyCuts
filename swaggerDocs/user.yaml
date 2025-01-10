@@ -1,0 +1,104 @@
+swagger: '3.0.0'
+info:
+  title: Users Model API
+  description: API related to Users models
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local server
+paths:
+  /api/auth/user/register/:
+    post:
+      summary: Register Users
+      description: Endpoint for registering users
+      tags:
+        - Users Model
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  example: John
+                lastName:
+                  type: integer
+                  example: Doe
+                mobileNo:
+                  type: string
+                  example: "97545678"
+                password:
+                  type: string
+                  example: "123"
+                city:
+                  type: string
+                  example: "kochi"
+                role:
+                  type: string
+                  example: "user"
+                
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Registered user successfully
+                  result:
+                    type: string
+                    example: ''
+  /api/auth/user/login/:
+    post:
+      summary: login Users
+      description: Endpoint for registering users
+      tags:
+        - Users Model
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mobileNo:
+                  type: string
+                  example: "97545678"
+                password:
+                  type: string
+                  example: "123"
+                
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example:  user logged in successfully
+                  result:
+                    type: string
+                    example: ''
+
+components:
+  securitySchemes:
+    JWT:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: JWT Bearer token
