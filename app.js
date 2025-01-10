@@ -5,6 +5,7 @@ dotenv.config()
 const connectToDatabase = require('./Config/DbConfig')
 
 const authRouter = require('./Auth/Routes/userRoute');
+const shopRouter = require('./Shops/Router/ShopRouter');
 const  setupSwagger = require('./swaggerDocs/swaggerConfig');
 // Define a route for the root URL
 connectToDatabase();
@@ -16,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 // Define the port
 const port = 3000;
 app.use('/api/auth', authRouter)
-
+app.use('/api/shop',shopRouter)
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
