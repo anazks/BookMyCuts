@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const {addShop,viewAllShops,addServices,viewAllServices} = require('../Repo/ShopRepo')
+const {addShop,viewAllShops,addServices,viewAllServices,addBarbers,viewAllBarbers} = require('../Repo/ShopRepo')
 const AddShop = asyncHandler(async (req,res)=>{
     const data = req.body;
     console.log(data,"data")
@@ -64,4 +64,36 @@ const ViewAllServices = asyncHandler(async (req,res)=>{
         })
     }
 })
-module.exports = {AddShop,ViewAllShop,addService,ViewAllServices}
+const addBarber = asyncHandler(async (req,res)=>{
+    const data = req.body;
+    console.log(data,"data")
+    let addBarber = await  addBarbers(data)
+    console.log(addBarber,"shopAdded")
+    if(addBarber){
+        res.json({
+            success:true,
+            message:"Barber added successfully",
+            data:addBarber
+        })
+    }else{
+        res.json({
+            success:false,
+            message:"Barber not added",
+        })}
+})
+const ViewAllBarbers = asyncHandler(async (req,res)=>{
+    let allBarber = await  viewAllBarbers()
+    if(allBarber){
+        res.json({
+            success:true,
+            message:"All Barbers",
+            data:allBarber
+        })
+    }else{
+        res.json({
+            success:false,
+            message:"No Barbers Found",
+        })
+    }
+})
+module.exports = {AddShop,ViewAllShop,addService,ViewAllServices,addBarber,ViewAllBarbers}
