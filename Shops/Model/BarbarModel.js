@@ -13,6 +13,10 @@ const BarabarSchema = new mongoose.Schema(
       type: String,
       required: true,
       min: 0 // Ensures rate is a positive number
+    },
+    shopId :{
+      type: String,
+      required: true,
     }
   },
   { timestamps: true } // Automatically adds createdAt and updatedAt fields

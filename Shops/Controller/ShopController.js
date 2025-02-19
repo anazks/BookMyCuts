@@ -1,4 +1,6 @@
 const asyncHandler = require("express-async-handler");
+const jwt = require('jsonwebtoken');
+const secretkey = process.env.secretkey;
 const {addShop,viewAllShops,addServices,viewAllServices,addBarbers,viewAllBarbers,getAShop} = require('../Repo/ShopRepo')
 const AddShop = asyncHandler(async (req,res)=>{
     const data = req.body;
@@ -35,6 +37,17 @@ const ViewAllShop = asyncHandler(async (req,res)=>{
 const addService = asyncHandler(async (req,res)=>{
     const data = req.body;
     console.log(data,"data")
+    let shopId ;
+    let token = req.headers['authorization']?.split(' ')[1]; // Get token from the Authorization header
+     jwt.verify(token, secretkey, (err, decoded) => {
+            if (err) {
+                return res.status(401).send('Invalid token'); // Token is invalid
+            }
+            console.log(decoded)
+            shopId = decoded.id;
+    })
+    data.shopId = shopId 
+    console.log(token,"token fromadd service")
     let addServicess = await  addServices(data)
     console.log(addServicess,"shopAdded")
     if(addServicess){
@@ -67,6 +80,15 @@ const ViewAllServices = asyncHandler(async (req,res)=>{
 const addBarber = asyncHandler(async (req,res)=>{
     const data = req.body;
     console.log(data,"data")
+    let token = req.headers['authorization']?.split(' ')[1]; // Get token from the Authorization header
+     jwt.verify(token, secretkey, (err, decoded) => {
+            if (err) {
+                return res.status(401).send('Invalid token'); // Token is invalid
+            }
+            console.log(decoded)
+            shopId = decoded.id;
+    })
+    data.shopId = shopId 
     let addBarber = await  addBarbers(data)
     console.log(addBarber,"shopAdded")
     if(addBarber){

@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const { registerUserUseCase,loginuserUsecause } = require("../UseCauses/userUseCause");
+const { registerUserUseCase,loginuserUsecause,registerShoperUseCase,loginShoperUsecause } = require("../UseCauses/userUseCause");
 
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken');
@@ -25,4 +25,25 @@ const userLogin = asyncHandler(async (req,res)=>{
             result:user
         })
 })
-module.exports = {userRegistration,userLogin}
+const ShopRegister = asyncHandler (async (req,res)=>{
+    const data = req.body;
+    console.log(data)
+    const result = await registerShoperUseCase(data);
+    res.json({
+        success:true,
+        message:"User registration successfull",
+        result
+    })
+})
+const login = asyncHandler(async(req,res)=>{
+    const data = req.body;
+    console.log(data,"data")
+    const user = await loginShoperUsecause(data)
+    console.log(user,"token")
+    res.json({
+        success:true,
+        message:"login Data",
+        result:user
+    })
+})
+module.exports = {userRegistration,userLogin,ShopRegister,login}

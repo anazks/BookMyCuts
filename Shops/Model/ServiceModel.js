@@ -3,17 +3,20 @@ const mongoose = require('mongoose');
 // Service Schema
 const ServiceSchema = new mongoose.Schema(
   {
-    
     ServiceName: {
       type: String,
       required: true,
-      trim: true // Removes extra whitespace
+      trim: true, // Removes extra whitespace
     },
     Rate: {
       type: Number,
       required: true,
-      min: 0 // Ensures rate is a positive number
-    }
+      min: 0, // Ensures rate is a positive number
+    },
+    shopId: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true } // Automatically adds createdAt and updatedAt fields
 );
