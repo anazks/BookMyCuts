@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const {addShop,viewAllShops,addServices,viewAllServices,addBarbers,viewAllBarbers} = require('../Repo/ShopRepo')
+const {addShop,viewAllShops,addServices,viewAllServices,addBarbers,viewAllBarbers,getAShop} = require('../Repo/ShopRepo')
 const AddShop = asyncHandler(async (req,res)=>{
     const data = req.body;
     console.log(data,"data")
@@ -96,4 +96,14 @@ const ViewAllBarbers = asyncHandler(async (req,res)=>{
         })
     }
 })
-module.exports = {AddShop,ViewAllShop,addService,ViewAllServices,addBarber,ViewAllBarbers}
+const viewSigleShop = asyncHandler(async(req,res)=>{
+    let id = req.body.id
+    let singleShop = await getAShop(id)
+    res.json({
+        success:true,
+        message:"Single shop",
+        data:singleShop
+    })
+
+})
+module.exports = {AddShop,ViewAllShop,addService,ViewAllServices,addBarber,ViewAllBarbers,viewSigleShop}

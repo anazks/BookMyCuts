@@ -45,3 +45,10 @@ module.exports.viewAllBarbers = async () => {
         console.log(error);
     }
 }
+module.exports.getAShop = async(id)=>{
+    try {
+        return await ShopModel.find({_id:id})
+    } catch (error) {
+        console.log(error)
+    }
+}
