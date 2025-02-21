@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv')
+const cors = require('cors')
 dotenv.config()
 const connectToDatabase = require('./Config/DbConfig')
 
@@ -12,6 +13,8 @@ connectToDatabase();
 app.get('/', (req, res) => {
   res.send('Hello, this is your Express server!');
 });
+app.use(cors())
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Define the port
