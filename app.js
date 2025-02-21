@@ -4,6 +4,7 @@ const dotenv = require('dotenv')
 const cors = require('cors')
 dotenv.config()
 const connectToDatabase = require('./Config/DbConfig')
+app.use(cors())
 
 const authRouter = require('./Auth/Routes/userRoute');
 const shopRouter = require('./Shops/Router/ShopRouter');
@@ -13,7 +14,6 @@ connectToDatabase();
 app.get('/', (req, res) => {
   res.send('Hello, this is your Express server!');
 });
-app.use(cors())
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
