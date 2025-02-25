@@ -17,6 +17,11 @@ const shoperModel = new Schema({
         required : true,
         maxlenght : 100
     },
+    email:{
+        type : String,
+        required : true,
+        maxlenght : 100
+    },
     city:{
         type : String,
         required : true

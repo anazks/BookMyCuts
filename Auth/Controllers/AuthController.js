@@ -30,7 +30,7 @@ const ShopRegister = asyncHandler (async (req,res)=>{
     console.log(data)
     const result = await registerShoperUseCase(data);
     res.json({
-        success:true,
+        success:true, 
         message:"User registration successfull",
         result
     })
