@@ -16,6 +16,6 @@ module.exports.createShoper = asyncHandler(async (data)=>{
 })
 module.exports.findShoper = asyncHandler(async (data)=>{
     let {email}  = data;
-    console.log(email,"mobile no")
+    console.log(email,"email----------------------")
     return await shoperModel.findOne({email:email})
 })

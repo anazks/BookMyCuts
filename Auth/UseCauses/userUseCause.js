@@ -47,10 +47,14 @@ module.exports.registerShoperUseCase =asyncHandler (async(data)=>{
     return true;
 })
 module.exports.loginShoperUsecause = asyncHandler(async(data)=>{
+    console.log(data,"data in usecase shoperlll")
     let user = await findShoper(data)
     let {password} = data;
     console.log(user,"shoper")
     console.log(data,"---------0000")
+    if(!user){
+        return {message:"Invalid Email"}
+    }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
         throw new Error('Invalid password'); // Password is incorrect
