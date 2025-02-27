@@ -7,8 +7,8 @@ module.exports.createUser = asyncHandler(async (data)=>{
 })
 
 module.exports.findUser = asyncHandler(async(data)=>{
-    let {mobileNo}  = data;
-    return await UserModel.findOne({mobileNo:mobileNo})
+    let {email}  = data;
+    return await UserModel.findOne({email:email})
 })
 
 module.exports.createShoper = asyncHandler(async (data)=>{

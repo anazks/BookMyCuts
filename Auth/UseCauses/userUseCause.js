@@ -16,12 +16,15 @@ module.exports.registerUserUseCase = async (data)=>{
 }
 
 module.exports.loginuserUsecause = async (data)=>{
-    let user = await findUser(data)
+    let email = data.email;
+    console.log(email,"email in usecause")
+    let user = await findUser(email)
     let {password} = data;
-    console.log(data,"---------")
+    console.log(password,"---------",user)
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-        throw new Error('Invalid password'); // Password is incorrect
+    if (!isMatch){
+         return  {message:"Invalid password"}
+        // throw new Error('Invalid password'); // Password is incorrect
     }
     const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: '1h' }); // Token expires in 1 hour
     let  {firstName} = user;
