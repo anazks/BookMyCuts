@@ -1,10 +1,20 @@
 const asyncHandler = require("express-async-handler");
 const jwt = require('jsonwebtoken');
 const secretkey = process.env.secretkey;
-const {addShop,viewAllShops,addServices,viewAllServices,addBarbers,viewAllBarbers,getAShop} = require('../Repo/ShopRepo')
+const {addShop,viewAllShops,addServices,viewAllServices,addBarbers,viewAllBarbers,getAShop,getMyService,getMyBarbers} = require('../Repo/ShopRepo')
 const AddShop = asyncHandler(async (req,res)=>{
     const data = req.body;
+    let shopId;
+    let token = req.headers['authorization']?.split(' ')[1]; // Get token from the Authorization header
+     jwt.verify(token, secretkey, (err, decoded) => {
+            if (err) {
+                return res.status(401).send('Invalid token'); // Token is invalid
+            }
+            console.log(decoded)
+            shopId = decoded.id;
+    })
     console.log(data,"data")
+    data.shopId=shopId
      let shopAdded = await  addShop(data)
      console.log(shopAdded,"shopAdded")
      if(shopAdded){
@@ -128,4 +138,23 @@ const viewSigleShop = asyncHandler(async(req,res)=>{
     })
 
 })
-module.exports = {AddShop,ViewAllShop,addService,ViewAllServices,addBarber,ViewAllBarbers,viewSigleShop}
+const viewMyService = asyncHandler(async(req,res)=>{
+    let id = req.params.id
+    let myShops = await getMyService(id)
+    res.json({
+        success:true,
+        message:"Single shop",
+        data:myShops
+    })
+})
+const viewMyBarbers = asyncHandler(async(req,res)=>{
+    let id = req.params.id
+    let myBarbers = await getMyBarbers(id)
+    res.json({
+        success:true,
+        message:"Single shop",
+        data:myBarbers
+    })
+})
+
+module.exports = {AddShop,ViewAllShop,addService,ViewAllServices,addBarber,ViewAllBarbers,viewSigleShop,viewMyService,viewMyBarbers}

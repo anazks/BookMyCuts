@@ -35,7 +35,11 @@ const ShopSchema = new mongoose.Schema(
         },
         message: props => `${props.value} is not a valid website URL!`
       }
-    }
+    },
+    shopId: {
+      type: String,
+      required: true
+    },
   },
   { timestamps: true } // Automatically adds createdAt and updatedAt fields
 );

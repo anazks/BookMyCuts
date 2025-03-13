@@ -8,6 +8,7 @@ app.use(cors())
 
 const authRouter = require('./Auth/Routes/userRoute');
 const shopRouter = require('./Shops/Router/ShopRouter');
+const SlotRouter = require('./SlotManagement/SlotRouter')
 const  setupSwagger = require('./swaggerDocs/swaggerConfig');
 // Define a route for the root URL
 connectToDatabase();
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 const port = 3001;
 app.use('/api/auth', authRouter)
 app.use('/api/shop',shopRouter)
+app.use('/api/slot',SlotRouter)
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

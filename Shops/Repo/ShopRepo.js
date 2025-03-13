@@ -1,6 +1,7 @@
 const ShopModel = require('../Model/ShopModel');
 const ServiceModel = require('../Model/ServiceModel');
 const BarberModel = require('../Model/BarbarModel');
+
 module.exports.addShop = async (data) => {
     try {
        return await ShopModel.create(data);
@@ -50,5 +51,21 @@ module.exports.getAShop = async(id)=>{
         return await ShopModel.find({_id:id})
     } catch (error) {
         console.log(error)
+    }
+}
+module.exports.getMyService = async(id)=>{
+    try {
+        return await ServiceModel.find({shopId:id})
+    } catch (error) {
+        console.log(error)
+        res.json(false)   
+    }
+}
+module.exports.getMyBarbers = async(id)=>{
+    try {
+        return await BarberModel.find({shopId:id})
+    } catch (error) {
+        console.log(error)
+        res.json(false)   
     }
 }
