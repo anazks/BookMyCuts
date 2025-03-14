@@ -8,7 +8,7 @@ app.use(cors())
 
 const authRouter = require('./Auth/Routes/userRoute');
 const shopRouter = require('./Shops/Router/ShopRouter');
-const SlotRouter = require('./SlotManagement/SlotRouter')
+const SlotRouter = require('./SlotManagement/SlotRouter/SlotRouter')
 const  setupSwagger = require('./swaggerDocs/swaggerConfig');
 // Define a route for the root URL
 connectToDatabase();
