@@ -129,7 +129,10 @@ const ViewAllBarbers = asyncHandler(async (req,res)=>{
     }
 })
 const viewSigleShop = asyncHandler(async(req,res)=>{
+    console.log("------------------")
+    console.log(req.body)
     let id = req.body.id
+    console.log(id,"id,----")
     let singleShop = await getAShop(id)
     res.json({
         success:true,
