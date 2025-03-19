@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const userRegistration = asyncHandler(async (req,res)=>{
     const data = req.body;
     const result = await registerUserUseCase(data);
+    console.log(result,"user registartion")
     res.json({
         success:true,
         message:"User registration successfull",
