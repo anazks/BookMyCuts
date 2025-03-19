@@ -47,4 +47,9 @@ const login = asyncHandler(async(req,res)=>{
         result:user
     })
 })
-module.exports = {userRegistration,userLogin,ShopRegister,login}
+const userModel = require('../Model/UserModel')
+const getUsers = asyncHandler(async(req,res)=>{
+    let users = await userModel.find({})
+    res.json(users)
+})
+module.exports = {userRegistration,userLogin,ShopRegister,login,getUsers}

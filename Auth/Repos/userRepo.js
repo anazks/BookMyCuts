@@ -6,10 +6,11 @@ module.exports.createUser = asyncHandler(async (data)=>{
     return await UserModel.create(data);
 })
 
-module.exports.findUser = asyncHandler(async(data)=>{
-    let {email}  = data;
-    return await UserModel.findOne({email:email})
-})
+module.exports.findUser = asyncHandler(async(data) => {
+    let {email} = data;
+    console.log(email, "email in rep####");
+    return await UserModel.findOne({email: email});
+});
 
 module.exports.createShoper = asyncHandler(async (data)=>{
     return await shoperModel.create(data)

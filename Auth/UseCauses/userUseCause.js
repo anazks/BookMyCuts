@@ -15,29 +15,38 @@ module.exports.registerUserUseCase = async (data)=>{
     return true;
 }
 
-module.exports.loginuserUsecause = async (data)=>{
+module.exports.loginuserUsecause = async (data) => {
     let email = data.email;
-    console.log(email,"email in usecause")
-    let user = await findUser(email)
-    let {password} = data;
-    console.log(password,"---------",user)
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch){
-         return  {message:"Invalid password"}
-        // throw new Error('Invalid password'); // Password is incorrect
+    console.log(email, "email in usecause");
+    // Problem: You're passing email directly, but findUser expects an object with email property
+    let user = await findUser({email: email}); // Fix: Pass an object with email property
+    
+    // Check if user exists
+    if (!user) {
+        return {message: "User not found"};
     }
-    const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: '1h' }); // Token expires in 1 hour
-    let  {firstName} = user;
+    
+    let {password} = data;
+    console.log(password, "---------", user);
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+        return {message: "Invalid password"};
+    }
+    
+    const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: '1h' });
+    let {firstName} = user;
     let {mobileNo} = user;
     let {city} = user;
-    let userData ={
-            firstName,
-            mobileNo,
-            city 
-    }
-    console.log(token)
-    return {token,userData}
-}
+    let userData = {
+        firstName,
+        mobileNo,
+        city 
+    };
+    
+    console.log(token);
+    return {token, userData};
+};
+
 module.exports.registerShoperUseCase =asyncHandler (async(data)=>{
     let {password} = data ;
     const saltRounds = 10;
