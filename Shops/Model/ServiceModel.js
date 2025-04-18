@@ -9,7 +9,7 @@ const ServiceSchema = new mongoose.Schema(
       trim: true, // Removes extra whitespace
     },
     Rate: {
-      type: Number,
+      type: String,
       required: true,
       min: 0, // Ensures rate is a positive number
     },

@@ -7,7 +7,7 @@ router.route('/ViewAllShop').get(ViewAllShop)
 router.route('/viewSigleShop').post(viewSigleShop)
 
 router.route('/addService').post(addService)
-router.route('/viewMyService:/id').get(viewMyService)
+router.route('/viewMyService/:id').get(viewMyService)
 router.route('/ViewAllServices').get(ViewAllServices)
 
 router.route('/addBarber').post(addBarber)

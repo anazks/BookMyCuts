@@ -9,6 +9,7 @@ app.use(cors())
 const authRouter = require('./Auth/Routes/userRoute');
 const shopRouter = require('./Shops/Router/ShopRouter');
 const SlotRouter = require('./SlotManagement/SlotRouter/SlotRouter')
+const BookingRouter = require('./Booking/Router/BookingRouter')
 const  setupSwagger = require('./swaggerDocs/swaggerConfig');
 // Define a route for the root URL
 connectToDatabase();
@@ -23,6 +24,7 @@ const port = 3002;
 app.use('/api/auth', authRouter)
 app.use('/api/shop',shopRouter)
 app.use('/api/slot',SlotRouter)
+app.use('/api/booking/',BookingRouter)
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
