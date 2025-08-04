@@ -20,6 +20,7 @@ const userLogin = asyncHandler(async (req,res)=>{
         console.log(data,"data")
         const user = await loginuserUsecause(data)
         console.log(user,"token")
+        console.log(user,"token")
         res.json({
             success:true,
             message:"login Data",
