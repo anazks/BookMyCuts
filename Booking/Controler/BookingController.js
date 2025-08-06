@@ -26,6 +26,21 @@ const AddBooking = async (req, res) => {
     }
 };
 
+const createOrder = async (req, res) => {
+    try {
+    const options = {
+      amount: req.body.amount * 100, // convert to paise
+      currency: 'INR',
+      receipt: `receipt_${Date.now()}`
+    };
+
+    const order = await razorpay.orders.create(options);
+    res.status(200).json(order);
+  } catch (err) {
+    res.status(500).json({ error: 'Order creation failed' });
+  }
+}
 
 
-module.exports = {checkAvailability,AddBooking}
+
+module.exports = {checkAvailability,AddBooking,createOrder}

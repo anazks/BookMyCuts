@@ -1,6 +1,7 @@
 const ShopModel = require('../Model/ShopModel');
 const ServiceModel = require('../Model/ServiceModel');
 const BarberModel = require('../Model/BarbarModel');
+const BookingModel = require('../../Booking/Models/BookingModel')
 
 module.exports.addShop = async (data) => {
     try {
@@ -46,9 +47,9 @@ module.exports.viewAllBarbers = async () => {
         console.log(error);
     }
 }
-module.exports.getAShop = async(id)=>{
+module.exports.getAShop = async(shopOwnerId)=>{
     try {
-        return await ShopModel.find({_id:id})
+        return await ShopModel.find({ShopOwnerId:shopOwnerId})
     } catch (error) {
         console.log(error)
     }
@@ -67,5 +68,13 @@ module.exports.getMyBarbers = async(id)=>{
     } catch (error) {
         console.log(error)
         res.json(false)   
+    }
+}
+
+module.exports.getAllBookingsOfShop = async (id) => {
+    try {
+        return await BookingModel.find({shopId:id})
+    } catch (error) {
+        console.error(error)
     }
 }
