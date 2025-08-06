@@ -11,8 +11,9 @@ module.exports.registerUserUseCase = async (data)=>{
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     data.password = hashedPassword;
-    await createUser(data);
-    return true;
+    const user = await createUser(data);
+    console.log(user,"user in usecase")
+    return user;
 }
 
 module.exports.loginuserUsecause = async (data) => {
@@ -52,8 +53,8 @@ module.exports.registerShoperUseCase =asyncHandler (async(data)=>{
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     data.password = hashedPassword;
-    await createShoper(data);
-    return true;
+    const shop = await createShoper(data);
+    return shop;
 })
 module.exports.loginShoperUsecause = asyncHandler(async(data)=>{
     console.log(data,"data in usecase shoperlll")
