@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const shoperModel = new Schema({
+const ShopOwner = new Schema({
     firstName:{
         type : String,
         required : true,
@@ -36,4 +36,4 @@ const shoperModel = new Schema({
     }
 })
 
-module.exports = mongoose.model('shop',shoperModel);
+module.exports = mongoose.model('shopOwner',ShopOwner);

@@ -31,11 +31,11 @@ const userLogin = asyncHandler(async (req,res)=>{
 const ShopRegister = asyncHandler (async (req,res)=>{
     const data = req.body;
     console.log(data)
-    const result = await registerShoperUseCase(data);
+    const shop = await registerShoperUseCase(data);
     res.json({
         success:true, 
         message:"User registration successfull",
-        result
+        shop
     })
 })
 const login = asyncHandler(async(req,res)=>{

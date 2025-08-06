@@ -4,6 +4,8 @@ const dotenv = require('dotenv')
 const cors = require('cors')
 dotenv.config()
 const connectToDatabase = require('./Config/DbConfig')
+const mongoose = require('mongoose');
+const User = require('./Auth/Model/UserModel')
 app.use(cors())
 
 const authRouter = require('./Auth/Routes/userRoute');
@@ -25,6 +27,10 @@ app.use('/api/auth', authRouter)
 app.use('/api/shop',shopRouter)
 app.use('/api/slot',SlotRouter)
 app.use('/api/booking/',BookingRouter)
+
+
+
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
