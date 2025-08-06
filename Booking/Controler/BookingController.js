@@ -13,6 +13,7 @@ const checkAvailability = async(req,res)=>{
 
 const AddBooking = async (req, res) => {
     try {
+        console.log(req.body, "req.body in BookingController");
         let token = req.headers['authorization']?.split(' ')[1]; // Bearer <token>
         let decodedValue = await Decoder(token);
         console.log(decodedValue, "decodedValue");
