@@ -14,7 +14,6 @@ const ShopSchema = new mongoose.Schema(
     },
     Mobile: {
       type: Number,
-      required: true,
       validate: {
         validator: function (v) {
           return /^(\d{10})$/.test(v); // Ensures it's a 10-digit number

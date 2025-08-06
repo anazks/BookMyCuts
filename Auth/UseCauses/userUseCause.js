@@ -20,7 +20,6 @@ module.exports.loginuserUsecause = async (data) => {
     console.log(email, "email in usecause");
     // Problem: You're passing email directly, but findUser expects an object with email property
     let user = await findUser({email: email}); // Fix: Pass an object with email property
-    
     // Check if user exists
     if (!user) {
         return {message: "User not found"};
@@ -30,7 +29,7 @@ module.exports.loginuserUsecause = async (data) => {
     console.log(password, "---------", user);
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-        return {message: "Invalid password"};
+        return {message: "Invalid password",success:false}; // Password is incorrect
     }
     
     const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: '1h' });
