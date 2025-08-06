@@ -4,7 +4,14 @@ const asyncHandler = require("express-async-handler");
 const { userLogin } = require("../Controllers/AuthController");
 
 module.exports.createUser = asyncHandler(async (data)=>{
-    return await UserModel.create(data);
+    try {
+        console.log("saving user now")
+        const user = await UserModel.create(data);
+        console.log('user saved successful')
+        return user
+    } catch (error) { 
+        console.error(error)
+    }
 })
 
 module.exports.findUser = asyncHandler(async(data) => {
