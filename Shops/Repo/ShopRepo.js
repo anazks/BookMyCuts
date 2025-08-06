@@ -69,3 +69,11 @@ module.exports.getMyBarbers = async(id)=>{
         res.json(false)   
     }
 }
+module.exports.getShopUser = async (shopId) => {
+    try {
+        return await ShopModel.findById({_id:shopId});
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
