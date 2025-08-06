@@ -15,7 +15,14 @@ const AddShop = asyncHandler(async (req,res)=>{
     })
     console.log(data,"data")
     data.shopId=shopId
-     let shopAdded = await  addShop(data)
+    let Obj = {
+        ShopName: data.name,
+        City: data.address,
+        Timing: data.timing,
+        website: data.website,
+        shopId: data.shopId
+    }
+     let shopAdded = await  addShop(Obj)
      console.log(shopAdded,"shopAdded")
      if(shopAdded){
             res.json({
@@ -45,7 +52,7 @@ const ViewAllShop = asyncHandler(async (req,res)=>{
     }
 })
 const addService = asyncHandler(async (req,res)=>{
-    const data = req.body;
+    const data = req.body.serviceDatas;
     console.log(data,"data")
     let shopId ;
     let token = req.headers['authorization']?.split(' ')[1]; // Get token from the Authorization header
@@ -88,7 +95,7 @@ const ViewAllServices = asyncHandler(async (req,res)=>{
     }
 })
 const addBarber = asyncHandler(async (req,res)=>{
-    const data = req.body;
+    const data = req.body.newBarbers;
     console.log(data,"data")
     let token = req.headers['authorization']?.split(' ')[1]; // Get token from the Authorization header
      jwt.verify(token, secretkey, (err, decoded) => {
@@ -98,9 +105,9 @@ const addBarber = asyncHandler(async (req,res)=>{
             console.log(decoded)
             shopId = decoded.id;
     })
-    data.shopId = shopId 
+    data.shopId = shopId //BarBarName
     let addBarber = await  addBarbers(data)
-    console.log(addBarber,"shopAdded")
+    console.log(addBarber,"addBarber")
     if(addBarber){
         res.json({
             success:true,
@@ -131,7 +138,7 @@ const ViewAllBarbers = asyncHandler(async (req,res)=>{
 const viewSigleShop = asyncHandler(async(req,res)=>{
     console.log("------------------")
     console.log(req.body)
-    let id = req.body.id
+    let id = req.body.data
     console.log(id,"id,----")
     let singleShop = await getAShop(id)
     res.json({
