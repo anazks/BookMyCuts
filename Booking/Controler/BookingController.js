@@ -1,6 +1,7 @@
 const Decoder = require('../../TokenDecoder/Decoder')
 const {checkAvailble,bookNow} = require('../UseCause/BookingUseCause')
 const {mybooking} = require('../Repo/BookingRepo')
+const RazorPay = require('../../Razorpay/RazorpayConfig')
 const mongoose = require('mongoose');
 
 const checkAvailability = async(req,res)=>{
@@ -29,6 +30,7 @@ const AddBooking = async (req, res) => {
 };
 
 const createOrder = async (req, res) => {
+    console.log(req.body)
     try {
     const options = {
       amount: req.body.amount * 100, // convert to paise
@@ -36,7 +38,8 @@ const createOrder = async (req, res) => {
       receipt: `receipt_${Date.now()}`
     };
 
-    const order = await razorpay.orders.create(options);
+    const order = await RazorPay.orders.create(options);
+    console.log(order)
     res.status(200).json(order);
   } catch (err) {
     res.status(500).json({ error: 'Order creation failed' });
