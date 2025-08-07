@@ -71,10 +71,19 @@ module.exports.getMyBarbers = async(id)=>{
     }
 }
 
+
 module.exports.getAllBookingsOfShop = async (id) => {
     try {
         return await BookingModel.find({shopId:id})
     } catch (error) {
         console.error(error)
+
+module.exports.getShopUser = async (shopId) => {
+    try {
+        return await ShopModel.findById({_id:shopId});
+    } catch (error) {
+        console.log(error);
+        return null;
+
     }
 }

@@ -16,3 +16,12 @@ module.exports.addBookings = async(data)=>{
         return error
     }
 }
+module.exports.mybooking = async(userId)=>{
+    try {
+        let bookings = await BookingModel.find({userId: userId})
+        return bookings
+    } catch (error) {
+        console.log(error)
+        return error
+    }
+}

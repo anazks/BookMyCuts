@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const BarabarSchema = new mongoose.Schema(
   {
     
-    BarBarName: {
+    BarberName: {
       type: String,
       required: true,
       trim: true // Removes extra whitespace
