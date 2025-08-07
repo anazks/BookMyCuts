@@ -1,29 +1,21 @@
 const asyncHandler = require("express-async-handler");
 const jwt = require('jsonwebtoken');
 const secretkey = process.env.secretkey;
+
+const {addShop,viewAllShops,addServices,viewAllServices,addBarbers,viewAllBarbers,getAShop,getMyService,getMyBarbers, getAllBookingsOfShop} = require('../Repo/ShopRepo')
+
+
+
+
 const {getShopUser,addShop,viewAllShops,addServices,viewAllServices,addBarbers,viewAllBarbers,getAShop,getMyService,getMyBarbers} = require('../Repo/ShopRepo');
 const Decoder = require("../../TokenDecoder/Decoder");
+
 const AddShop = asyncHandler(async (req,res)=>{
-    const data = req.body;
-    let shopId;
-    let token = req.headers['authorization']?.split(' ')[1]; // Get token from the Authorization header
-     jwt.verify(token, secretkey, (err, decoded) => {
-            if (err) {
-                return res.status(401).send('Invalid token'); // Token is invalid
-            }
-            console.log(decoded)
-            shopId = decoded.id;
-    })
-    console.log(data,"data")
-    data.shopId=shopId
-    let Obj = {
-        ShopName: data.name,
-        City: data.address,
-        Timing: data.timing,
-        website: data.website,
-        shopId: data.shopId
-    }
-     let shopAdded = await  addShop(Obj)
+     const data = req.body;
+     console.log("userId",req.userId)
+     data.ShopOwnerId = req.userId;
+     console.log(data)
+     let shopAdded = await  addShop(data)
      console.log(shopAdded,"shopAdded")
      if(shopAdded){
             res.json({
@@ -37,6 +29,7 @@ const AddShop = asyncHandler(async (req,res)=>{
             message:"Shop not added",
      })}
 })
+
 const ViewAllShop = asyncHandler(async (req,res)=>{
     let allShops = await  viewAllShops()
     if(allShops){
@@ -192,15 +185,12 @@ const ViewAllBarbers = asyncHandler(async (req,res)=>{
     }
 })
 const viewSigleShop = asyncHandler(async(req,res)=>{
-    console.log("------------------")
-    console.log(req.body)
-    let id = req.body.data
-    console.log(id,"id,----")
-    let singleShop = await getAShop(id)
+    const shopOwnerId = req.userId
+    let shops = await getAShop(shopOwnerId)
     res.json({
         success:true,
         message:"Single shop",
-        data:singleShop
+        shops
     })
 
 })
@@ -259,6 +249,27 @@ const viewMyBarbers = asyncHandler(async(req,res)=>{
     
 })
 
+
+const viewAllBookingOfShops = asyncHandler(async (req,res)=>{
+    const shopOwnerId = req.userId
+    console.log(req.userId,"userId in viewAllBookingOfShops")
+    let bookings = await getAllBookingsOfShop(shopOwnerId)
+    if(!bookings || bookings.length === 0){
+          res.status(500).json({
+            success:false,
+            message:"internal server error"
+        })
+    }else{
+          res.status(200).json({
+            success:true,
+            message:"All bookings of shop",
+            bookings
+        })
+    }
+})
+
+// module.exports = {AddShop,ViewAllShop,addService,ViewAllServices,addBarber,ViewAllBarbers,viewSigleShop,viewMyService,viewMyBarbers,viewAllBookingOfShops}
+
 const myprofile = asyncHandler(async (req, res) => {
     let token = req.headers['authorization']?.split(' ')[1]; // Get token from the Authorization header
     if (!token) {
@@ -281,3 +292,4 @@ const myprofile = asyncHandler(async (req, res) => {
     }
 })
 module.exports = {myprofile,AddShop,ViewAllShop,addService,ViewAllServices,addBarber,ViewAllBarbers,viewSigleShop,viewMyService,viewMyBarbers}
+

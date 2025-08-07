@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const shopOwner = require('../../Auth/Model/ShoperModel')
 
 const ShopSchema = new mongoose.Schema(
   {
@@ -34,9 +35,10 @@ const ShopSchema = new mongoose.Schema(
         },
         message: props => `${props.value} is not a valid website URL!`
       }
-    },
-    shopId: {
-      type: String,
+    },  
+    ShopOwnerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"shopOwner",
       required: true
     },
   },

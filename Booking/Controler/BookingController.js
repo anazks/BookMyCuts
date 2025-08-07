@@ -28,6 +28,24 @@ const AddBooking = async (req, res) => {
     }
 };
 
+const createOrder = async (req, res) => {
+    try {
+    const options = {
+      amount: req.body.amount * 100, // convert to paise
+      currency: 'INR',
+      receipt: `receipt_${Date.now()}`
+    };
+
+    const order = await razorpay.orders.create(options);
+    res.status(200).json(order);
+  } catch (err) {
+    res.status(500).json({ error: 'Order creation failed' });
+  }
+}
+
+
+
+
 const getMybooking = async (req, res) => {
     try {
         let token = req.headers['authorization']?.split(' ')[1]; // Bearer <token>
@@ -42,4 +60,5 @@ const getMybooking = async (req, res) => {
     }
 }
 
-module.exports = {checkAvailability,AddBooking,getMybooking}
+module.exports = {checkAvailability,AddBooking,getMybooking,createOrder}
+
