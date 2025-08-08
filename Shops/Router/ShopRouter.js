@@ -15,5 +15,6 @@ router.route('/addBarber').post(addBarber)
 router.route('/ViewAllBarbers').get(ViewAllBarbers)
 router.route('/viewMyBarbers/:id').get(viewMyBarbers)
 router.route('/viewAllBookingOfShops').get(verifyToken,viewAllBookingOfShops)
+router.route
 
 module.exports = router;
