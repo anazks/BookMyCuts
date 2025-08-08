@@ -17,6 +17,10 @@ const ServiceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    shoperId: {
+      type: String,
+      required: true,
+    }
   },
   { timestamps: true } // Automatically adds createdAt and updatedAt fields
 );
