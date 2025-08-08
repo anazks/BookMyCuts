@@ -2,7 +2,7 @@ const ShopModel = require('../Model/ShopModel');
 const ServiceModel = require('../Model/ServiceModel');
 const BarberModel = require('../Model/BarbarModel');
 const BookingModel = require('../../Booking/Models/BookingModel')
-
+const ShopperModel = require('../../Auth/Model/ShoperModel')
 module.exports.addShop = async (data) => {
     try {
        return await ShopModel.create(data);
@@ -49,14 +49,14 @@ module.exports.viewAllBarbers = async () => {
 }
 module.exports.getAShop = async(shopOwnerId)=>{
     try {
-        return await ShopModel.find({ShopOwnerId:shopOwnerId})
+        return await ShopModel.find({_id:shopOwnerId})
     } catch (error) {
         console.log(error)
     }
 }
 module.exports.getMyService = async(id)=>{
     try {
-        return await ServiceModel.find({shopId:id})
+        return await ServiceModel.find({shoperId:id})
     } catch (error) {
         console.log(error)
         res.json(false)   
@@ -64,17 +64,57 @@ module.exports.getMyService = async(id)=>{
 }
 module.exports.getMyBarbers = async(id)=>{
     try {
-        return await BarberModel.find({shopId:id})
+        console.log("Fetching barbers for shop ID:", id);
+        return await BarberModel.find({shoperId:id})
     } catch (error) {
         console.log(error)
         res.json(false)   
     }
 }
 
+
 module.exports.getAllBookingsOfShop = async (id) => {
     try {
         return await BookingModel.find({shopId:id})
     } catch (error) {
         console.error(error)
+        return null;
+    }
+}
+
+module.exports.getShopUser = async (shopId) => {
+    try {
+        return await ShopperModel.findById({_id:shopId});
+    } catch (error) {
+        console.log(error);
+        return null;
+
+    }
+}
+module.exports.getMyshop = async (shopOwnerId) => {
+    try {
+        console.log("Fetching shop for owner ID:", shopOwnerId);
+        return await ShopModel.findOne({ShopOwnerId: shopOwnerId});
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+module.exports.getShopService = async (shopId) => {
+    try {
+        console.log("Fetching services for shop ID:", shopId);
+        return await ServiceModel.find({shopId: shopId});
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+module.exports.getShopBarbers = async (shopId) => {
+    try {
+        console.log("Fetching barbers for shop ID:", shopId);
+        return await BarberModel.find({shopId: shopId});
+    } catch (error) {
+        console.log(error);
+        return null;
     }
 }
