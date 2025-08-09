@@ -16,7 +16,9 @@ const {
     getShopUser,
     getMyshop,
     getShopService,
-    getShopBarbers
+    getShopBarbers,
+    editBarberProfile,
+    deleteBarberFunction
 } = require('../Repo/ShopRepo');
 const Decoder = require("../../TokenDecoder/Decoder");
 
@@ -489,7 +491,55 @@ const viewSingleShopBarbers = asyncHandler(async (req, res) => {
         });
     }
 });
+
+const updateBarber = async (req,res) => {
+    try {
+        const barberId = req.params.id
+        let data = req.body
+        const barber = await editBarberProfile(barberId,data)
+        if(!barber || barber.lenght === 0){
+             return res.status(404).json({
+                success: false,
+                message: "barber not found"
+            });
+        }
+
+          return res.status(200).json({
+            success: true,
+            message: "successfully updated barber",
+            data: barber
+        });
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message:"internal server error"
+        })
+    }
+}
+
+const deleteBarber =async (req, res) => {
+     try {
+         const barberId = req.params.id
+         const barber = await deleteBarberFunction(barberId)
+         if(!barber || barber.length === 0){
+            return res.status(404).json({
+                success:true,
+                message:"successfull deleted"
+            })
+         }
+
+     } catch (error) {
+        console.error(error)
+        res.status(500).json({
+            success:false,
+            message:"internal server error"
+        })
+     }
+}
+
 module.exports = {
+    deleteBarber,
     myprofile,
     AddShop,
     ViewAllShop,
@@ -503,5 +553,6 @@ module.exports = {
     viewAllBookingOfShops,
     viewMyshop,
     viewSingleShopService,
-    viewSingleShopBarbers
+    viewSingleShopBarbers,
+    updateBarber
 };
