@@ -28,9 +28,9 @@ module.exports.mybooking = async(userId)=>{
 }
  
 
-module.exports.findDashboardIncomeFuncion = async (userId) => {
+module.exports.findDashboardIncomeFuncion = async (shopId) => {
   try {
-    console.log(userId, "in findDashboardIncomeFuncion");
+    // console.log(userId, "in findDashboardIncomeFuncion");
 
     let now = new Date();
     let lastWeekStart = new Date();
@@ -42,16 +42,19 @@ module.exports.findDashboardIncomeFuncion = async (userId) => {
     let endOfDay = new Date();
     endOfDay.setHours(23, 59, 59, 999);
 
+    let startOfMonth = new Date(now.getFullYear(),now.getMonth(),1)
+    let endOfMonth = new Date(now.getFullYear(),now.getMonth()+1,0,23,59,59,999);
+
     let result = await BookingModel.aggregate([
       {
-        $match: { userId: new mongoose.Types.ObjectId(userId) }
+        $match: { shopId }
       },
       {
         $facet: {
           lastWeek: [
             {
               $match: {
-                bookingTimestamp: { $gte: lastWeekStart, $lte: now }
+                bookingTimestamp: { $gte: lastWeekStart, $lte: endOfDay }
               }
             },
             {
@@ -86,6 +89,19 @@ module.exports.findDashboardIncomeFuncion = async (userId) => {
                 total: { $sum: "$remainingAmount" } // changed from expectedAmount
               }
             }
+          ],
+          monthlyAmount: [
+            {
+              $match: {
+                bookingTimestamp: { $gte: startOfMonth, $lte: endOfMonth }
+              }
+            },
+            {
+              $group: {
+                _id: null,
+                total:{ $sum: "$amountPaid" }
+              }
+            }
           ]
         }
       }
@@ -94,7 +110,8 @@ module.exports.findDashboardIncomeFuncion = async (userId) => {
     return {
       lastWeek: result[0].lastWeek[0]?.total || 0,
       today: result[0].today[0]?.total || 0,
-      todayExpectedAmount: result[0].todayExpectedAmount[0]?.total || 0
+      todayExpectedAmount: result[0].todayExpectedAmount[0]?.total || 0,
+      monthlyAmount:result[0].monthlyAmount[0]?.total || 0
     };
   } catch (error) {
     console.error(error);

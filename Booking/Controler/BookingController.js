@@ -65,11 +65,12 @@ const getMybooking = async (req, res) => {
 
 const findDashboardIncome =  async (req, res) => {
     try {
-        const userId = req.params.id
-        const dashboardIncome = await findDashboardIncomeFuncion(userId)
+        const shopId = req.params.id
+        const dashboardIncome = await findDashboardIncomeFuncion(shopId)
         if(dashboardIncome){
             return res.status(200).json({ 
                 success: true,
+                message:"successfully fetch dashboard income",
                 dashboardIncome
              });
         }else{
