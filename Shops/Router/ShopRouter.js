@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {viewMyshop,viewSingleShopBarbers,viewSingleShopService,myprofile,viewAllBookingOfShops,myShopProfile,AddShop,ViewAllShop,addService,ViewAllServices,addBarber,ViewAllBarbers,viewSigleShop,viewMyService,viewMyBarbers} = require('../Controller/ShopController')
+const {viewMyshop,viewSingleShopBarbers,viewSingleShopService,myprofile,viewAllBookingOfShops,myShopProfile,AddShop,ViewAllShop,addService,ViewAllServices,addBarber,ViewAllBarbers,viewSigleShop,viewMyService,viewMyBarbers,updateBarber, deleteBarber} = require('../Controller/ShopController')
 
 router.route('/addShop').post(AddShop)
 router.route('/getMyProfile').get(myprofile)
@@ -21,4 +21,7 @@ router.route('/ViewAllServices').get(ViewAllServices)
 router.route('/addBarber').post(addBarber)
 router.route('/ViewAllBarbers').get(ViewAllBarbers)
 router.route('/viewMyBarbers').get(viewMyBarbers)
+router.route('/updateBarber/:id').put(updateBarber)
+router.route('/deleteBarber/:id').delete(deleteBarber)
+
 module.exports = router;
