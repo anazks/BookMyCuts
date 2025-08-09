@@ -1,4 +1,4 @@
-const {checkBookings,addBookings} = require('../Repo/BookingRepo')
+const {checkBookings,addBookings,updateBooking} = require('../Repo/BookingRepo')
 const mongoose = require('mongoose');
 
 module.exports.checkAvailable = async (data) => {
@@ -78,6 +78,14 @@ module.exports.bookNow = async (data, decodedValue) => {
   }
 };
 
-
+module.exports.bookingCompletion = (data)=>{
+    try {
+      let response = updateBooking(data)
+      return response
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}
 
 
