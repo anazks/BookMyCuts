@@ -134,3 +134,19 @@ module.exports.deleteBarberFunction = async (barberId) => {
         console.error(error)
     }
 }
+
+module.exports.makePremiumFunction = async (shopId,data) => {
+    try {
+        const premiumStartDate = new Date()
+        const premiumEndDate = new Date(premiumStartDate)
+        premiumStartDate.setDate(premiumStartDate.getDate() + 30)
+        const premium = await ShopModel.findByIdAndUpdate(shopId,{
+            IsPremium:true,
+            PremiumStartDate:premiumStartDate,
+            PremiumEndDate:premiumEndDate
+        });
+        return premium;
+    } catch (error) {
+        console.error(error)
+    }
+}
