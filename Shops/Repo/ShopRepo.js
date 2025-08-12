@@ -162,3 +162,19 @@ module.exports.getShopBarbers = async (shopId) => {
         return null;
     }
 }
+
+module.exports.editBarberProfile = async (barberId,data) => {
+    try {
+        return await BarberModel.findByIdAndUpdate(barberId, data, {new: true});
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+module.exports.deleteBarberFunction = async (barberId) => {
+    try {
+        return await BarberModel.findByIdAndDelete(barberId)
+    } catch (error) {
+        console.error(error)
+    }
+}

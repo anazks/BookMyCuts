@@ -1,6 +1,6 @@
 const Decoder = require('../../TokenDecoder/Decoder')
 const {checkAvailble,bookNow,bookingCompletion} = require('../UseCause/BookingUseCause')
-const {mybooking} = require('../Repo/BookingRepo')
+const {mybooking,findDashboardIncomeFuncion} = require('../Repo/BookingRepo')
 const RazorPay = require('../../Razorpay/RazorpayConfig')
 const mongoose = require('mongoose');
 const { trace } = require('../Router/BookingRouter');
@@ -132,5 +132,30 @@ const getMybooking = async (req, res) => {
     }
 }
 
-module.exports = {checkAvailability,AddBooking,getMybooking,createOrder,verifyPayment}
+const findDashboardIncome =  async (req, res) => {
+    try {
+        const shopId = req.params.id
+        const dashboardIncome = await findDashboardIncomeFuncion(shopId)
+        if(dashboardIncome){
+            return res.status(200).json({ 
+                success: true,
+                message:"successfully fetch dashboard income",
+                dashboardIncome
+             });
+        }else{
+            return res.status(404).json({
+                success: false,
+                
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message:"internal error"
+        })
+    }
+}
+
+module.exports = {checkAvailability,AddBooking,getMybooking,createOrder,findDashboardIncome,verifyPayment}
+
 

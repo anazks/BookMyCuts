@@ -26,7 +26,7 @@ const port = 3002;
 app.use('/api/auth', authRouter)
 app.use('/api/shop',shopRouter)
 app.use('/api/slot',SlotRouter)
-app.use('/api/booking/',BookingRouter)
+app.use('/api/booking',BookingRouter)
 
 
 

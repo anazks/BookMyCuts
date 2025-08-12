@@ -1,6 +1,7 @@
 const { response } = require("express")
 const BookingModel = require("../Models/BookingModel")
-const ShopModel= require('../../Shops/Model/ShopModel')
+const mongoose = require("mongoose");
+
 module.exports.checkBookings = async(data)=>{
     try {
         
@@ -17,68 +18,103 @@ module.exports.addBookings = async(data)=>{
         return error
     }
 }
+module.exports.mybooking = async(userId)=>{
+    try {
+        let bookings = await BookingModel.find({userId: userId})
+        return bookings
+    } catch (error) {
+        console.log(error)
+        return error
+    }
+}
+ 
 
-  
-
-module.exports.mybooking = async (userId) => {
+module.exports.findDashboardIncomeFuncion = async (shopId) => {
   try {
-    // Step 1: Get completed bookings for the user
-    let bookings = await BookingModel.find({
-      userId: userId,
-      bookingStatus: 'completed'
-    }).lean(); // Use lean for plain JS objects (faster, easier to modify)
+    // console.log(userId, "in findDashboardIncomeFuncion");
 
-    // Step 2: Get unique shopIds from the bookings
-    const shopIds = [...new Set(bookings.map(b => b.shopId))];
+    let now = new Date();
+    let lastWeekStart = new Date();
+    lastWeekStart.setDate(lastWeekStart.getDate() - 7);
 
-    // Step 3: Fetch shop details for those shopIds
-    const shops = await ShopModel.find({
-      _id: { $in: shopIds }
-    }).lean();
+    let startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
 
-    // Step 4: Create a map for quick lookup
-    const shopMap = {};
-    shops.forEach(shop => {
-      shopMap[shop._id.toString()] = shop;
-    });
+    let endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
 
-    // Step 5: Attach shop info to each booking
-    const bookingsWithShop = bookings.map(booking => {
-      return {
-        ...booking,
-        shopDetails: shopMap[booking.shopId] || null
-      };
-    });
+    let startOfMonth = new Date(now.getFullYear(),now.getMonth(),1)
+    let endOfMonth = new Date(now.getFullYear(),now.getMonth()+1,0,23,59,59,999);
 
-    return bookingsWithShop;
-
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-};
-
-
-module.exports.updateBooking = async (data) => {
-  try {
-    const { bookingId, razorpay_order_id,amount } = data;
-
-    const response = await BookingModel.findByIdAndUpdate(
-      bookingId,
+    let result = await BookingModel.aggregate([
       {
-        $set: {
-          bookingStatus: "completed",
-          paymentId: razorpay_order_id,
-          paymentStatus: "paid",
-          amountPaid:amount
-        }
+        $match: { shopId }
       },
-      { new: true } // returns the updated document
-    );
+      {
+        $facet: {
+          lastWeek: [
+            {
+              $match: {
+                bookingTimestamp: { $gte: lastWeekStart, $lte: endOfDay }
+              }
+            },
+            {
+              $group: {
+                _id: null,
+                total: { $sum: "$amountPaid" }
+              }
+            }
+          ],
+          today: [
+            {
+              $match: {
+                bookingTimestamp: { $gte: startOfDay, $lte: endOfDay }
+              }
+            },
+            {
+              $group: {
+                _id: null,
+                total: { $sum: "$amountPaid" }
+              }
+            }
+          ],
+          todayExpectedAmount: [
+            {
+              $match: {
+                bookingTimestamp: { $gte: startOfDay, $lte: endOfDay }
+              }
+            },
+            {
+              $group: {
+                _id: null,
+                total: { $sum: "$remainingAmount" } // changed from expectedAmount
+              }
+            }
+          ],
+          monthlyAmount: [
+            {
+              $match: {
+                bookingTimestamp: { $gte: startOfMonth, $lte: endOfMonth }
+              }
+            },
+            {
+              $group: {
+                _id: null,
+                total:{ $sum: "$amountPaid" }
+              }
+            }
+          ]
+        }
+      }
+    ]);
 
-    return response;
+    return {
+      lastWeek: result[0].lastWeek[0]?.total || 0,
+      today: result[0].today[0]?.total || 0,
+      todayExpectedAmount: result[0].todayExpectedAmount[0]?.total || 0,
+      monthlyAmount:result[0].monthlyAmount[0]?.total || 0
+    };
   } catch (error) {
-    console.error("Error updating booking:", error);
-    return null;
+    console.error(error);
   }
 };
