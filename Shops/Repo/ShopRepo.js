@@ -2,7 +2,8 @@ const ShopModel = require('../Model/ShopModel');
 const ServiceModel = require('../Model/ServiceModel');
 const BarberModel = require('../Model/BarbarModel');
 const BookingModel = require('../../Booking/Models/BookingModel')
-const ShopperModel = require('../../Auth/Model/ShoperModel')
+const ShopperModel = require('../../Auth/Model/ShoperModel');
+const BankDetailsModel = require('../Model/BankDetails');
 module.exports.addShop = async (data) => {
     try {
        return await ShopModel.create(data);
@@ -146,6 +147,55 @@ module.exports.makePremiumFunction = async (shopId,data) => {
             PremiumEndDate:premiumEndDate
         });
         return premium;
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+module.exports.getAllPremiumShopsFunction = async () => {
+    try {
+        return await ShopModel.find({IsPremium:true})
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+module.exports.saveBankDetailsFunction = async (data) => {
+    try {
+        return await BankDetailsModel.create(data)
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+module.exports.viewbankDetailsFunction = async (shoperId) => {
+    try {
+        const bank = await BankDetailsModel.findOne({ ShoperId: shoperId });
+        return bank
+    } catch (error) {
+       console.error(error) 
+    }
+}
+
+module.exports.deleteBankdetailsFunction = async (shoperId) => {
+    try {
+        const result = await BankDetailsModel.deleteOne({ ShoperId: shoperId });
+        
+        if (result.deletedCount > 0) {
+            console.log('✅ Bank details deleted successfully');
+        } else {
+            console.log('⚠️ No bank details found for this ShoperId');
+        }
+    } catch (error) {
+        console.error('❌ Error deleting bank details:', error);
+    }
+};
+
+
+module.exports.updateBankDetailsFunction = async (shoperId,data) => {
+    try {
+        const Bank = await BankDetailsModel.findOneAndUpdate({ShoperId: shoperId}, data,{new:true})
+        return Bank
     } catch (error) {
         console.error(error)
     }

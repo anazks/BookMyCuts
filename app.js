@@ -35,7 +35,7 @@ app.use('/api/slot', SlotRouter)
 app.use('/api/booking', BookingRouter)
 
 // Fixed cron job - runs every 10 minutes
-const scheduledJob = cron.schedule('*/10 * * * *', async () => {
+const scheduledJob = cron.schedule('0 0 */1 * *', async () => {
   console.log("Running expired premium check:", new Date().toISOString());
   try {
     // Check if the checkExpiredPremium function exists and is callable

@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const secretkey = process.env.secretkey;
 
 const {
+    updateBankDetailsFunction,
+    saveBankDetailsFunction,
     addShop,
     viewAllShops,
     addServices,
@@ -19,9 +21,13 @@ const {
     getShopBarbers,
     editBarberProfile,
     deleteBarberFunction,
-    makePremiumFunction
+    makePremiumFunction,
+    getAllPremiumShopsFunction,
+    viewbankDetailsFunction,
+    deleteBankdetailsFunction
 } = require('../Repo/ShopRepo');
 const Decoder = require("../../TokenDecoder/Decoder");
+const { json } = require("express");
 
 const AddShop = asyncHandler(async (req, res) => {
     const data = req.body;
@@ -564,7 +570,138 @@ const makePremium =  async (req,res) => {
     }
 }
 
+const getAllPremiumShops = async (req,res) => {
+    try {
+        let premiumShops = await getAllPremiumShopsFunction()
+        if(!premiumShops){
+            return res.status(404).json({
+                success:false,
+                message:"get all premium shops is faied"
+            })
+        }else{
+            return res.status(200).json({
+                success:true,
+                message:"successfully get all premium shops",
+                premiumShops
+            })
+        }
+    } catch (error) {
+        console.error(error)
+         return res.status(500).json({
+                success:false,
+                message:"internal server error"
+            })
+    }
+}
+
+const saveBankDetails = async (req,res) => {
+    try {
+        const shoperId = req.params.id
+        const data = req.body
+        const bankDetails = await saveBankDetailsFunction(data,shoperId)
+        if(!bankDetails){
+            return res.status(404).json({
+                success:false,
+                message:"failed to save bank details"
+            })
+        }else{
+            return res.status(200).json({
+                success:true,
+                message:"successfully saved bank details",
+                bankDetails
+            })
+        }
+    } catch (error) {
+        console.error(error)
+         return res.status(500).json({
+                success:false,
+                message:"internal server error"
+            })
+    }
+}
+
+const viewbankDetails = async (req,res) => {
+    try {
+       const shoperId = req.params.id
+       const bankDetails = await viewbankDetailsFunction(shoperId) 
+       console.log("Bank details",bankDetails)
+       if(!bankDetails){
+          return res.status(404).json({
+                success:true,
+                message:"fetching bank details is failed",
+          })
+       }else{
+          return res.status(200).json({
+                success:true,
+                message:"successfully fetched bank details",
+                bankDetails
+          })
+       }
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success:false,
+            message:"internal server error"
+        })
+    }
+}
+
+const deleteBankDetails = async (req,res) => {
+    try {
+        const shoperId = req.params.id
+        const bankDetails = await deleteBankdetailsFunction(shoperId)
+        if(!bankDetails || bankdetails.lenght === 0){
+            return res.status(200).json({
+                success:true,
+                message:"successfully deleted the bank details"
+            })
+        }else{
+            return res.status(404).json({
+                success:false,
+                message:"deletion failed"
+            })
+        }
+    }
+    catch (error) {
+       console.error(error) 
+       return res.status(500).json({
+            success:false,
+            message:"internal server error"
+       })
+    }
+}
+
+const upadateBankdetails = async (req,res) => {
+    try {
+        const shoperId = req.params.id
+        const data = req.body
+        const bankDetails = await updateBankDetailsFunction(shoperId,data)
+        if(bankDetails){
+            return res.status(200).json({
+                success:true,
+                message:"successfully updated bank details",
+                bankDetails
+            })
+        }else{
+            return res.status(404).json({
+                success:false,
+                message:"failed to update the bank details"
+            })
+        }  
+        } catch (error) {
+        console.error(erro)
+        return res.status(500).json({
+            success:failed,
+            message:"interal server error"
+        })
+    }
+}
 module.exports = {
+    upadateBankdetails,
+    deleteBankDetails,
+    viewbankDetails,
+    saveBankDetails,
+    getAllPremiumShops,
     makePremium,
     deleteBarber,
     myprofile,

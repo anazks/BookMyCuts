@@ -13,7 +13,7 @@ const checkExpiredPremium = async () => {
         console.log("expired premium shops:",expiredPremiumShops)
        return expiredPremiumShops
     } catch (error) {
-        
+       console.error(error) 
     }
 }
 
