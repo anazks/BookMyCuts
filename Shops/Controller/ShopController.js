@@ -346,8 +346,10 @@ const viewMyBarbers = asyncHandler(async (req, res) => {
 
 const viewAllBookingOfShops = asyncHandler(async (req, res) => {
     try {
-        const shopOwnerId = req.userId;
-        const bookings = await getAllBookingsOfShop(shopOwnerId);
+        const token = req.headers['authorization']?.split(' ')[1];
+        const tokenData = await Decoder(token);
+        console.log(tokenData)
+        const bookings = await getAllBookingsOfShop(tokenData.id);
         
         if (!bookings || bookings.length === 0) {
             return res.status(404).json({
@@ -355,7 +357,7 @@ const viewAllBookingOfShops = asyncHandler(async (req, res) => {
                 message: "No bookings found for this shop"
             });
         }
-        
+        console.log(bookings)
         return res.status(200).json({
             success: true,
             message: "Bookings retrieved successfully",
