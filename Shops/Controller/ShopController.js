@@ -18,7 +18,8 @@ const {
     getShopService,
     getShopBarbers,
     editBarberProfile,
-    deleteBarberFunction
+    deleteBarberFunction,
+    makePremiumFunction
 } = require('../Repo/ShopRepo');
 const Decoder = require("../../TokenDecoder/Decoder");
 
@@ -540,7 +541,33 @@ const deleteBarber =async (req, res) => {
      }
 }
 
+const makePremium =  async (req,res) => {
+    try {
+        const {shopId} = req.body
+        const premium = await makePremiumFunction(shopId)
+        if(!premium || premium.length === 0){
+            return res.status(404).json({
+                succuss:true,
+                message:"premium subscirption is failed"
+            })
+        }else{
+            return res.status(200).json({
+                success:true,
+                message:"successfully subscribed to premium",
+                premium
+            })
+        }
+    } catch (error) {
+            console.error(error)
+            return res.status(500).json({
+                success:false,
+                message:"internal server error"
+            })
+    }
+}
+
 module.exports = {
+    makePremium,
     deleteBarber,
     myprofile,
     AddShop,

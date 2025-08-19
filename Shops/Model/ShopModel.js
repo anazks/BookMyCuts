@@ -41,6 +41,17 @@ const ShopSchema = new mongoose.Schema(
       ref:"shopOwner",
       required: true
     },
+    IsPremium:{
+      type:Boolean,
+      default:false
+    },
+    PremiumStartDate:{
+      type:Date
+    },
+    PremiumEndDate:{
+      type:Date,
+    }
+    
   },
   { timestamps: true } // Automatically adds createdAt and updatedAt fields
 );
